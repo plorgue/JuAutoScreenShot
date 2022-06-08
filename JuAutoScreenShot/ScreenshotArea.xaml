@@ -1,0 +1,15 @@
+﻿<Window x:Class="JuAutoScreenShot.ScreenshotArea"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JuAutoScreenShot"
+        mc:Ignorable="d"
+        Title="ScreenshotArea" Height="450" Width="800" ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized">
+    <Grid>
+        <!--
+        <Image x:Name="img_background" />
+        -->
+        <Canvas x:Name="canvas_screeshot" MouseLeftButtonDown="canvas_screeshot_MouseLeftButtonDown" MouseMove="canvas_screeshot_MouseMove" Cursor="Cross"/>
+    </Grid>
+</Window>
