@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using Screen = System.Windows.Forms.Screen;
 using Point = System.Windows.Point;
-using System.Windows.Media.Imaging;
-using System.Globalization;
-using System.Drawing.Imaging;
+using Screen = System.Windows.Forms.Screen;
 
 namespace JuAutoScreenShot
 {
@@ -21,15 +21,7 @@ namespace JuAutoScreenShot
         public bool IsStarted = false;
         public Point[] Points = new Point[2];
         public bool HaveTowPts = false;
-
-        public void setPoints(Point[] pts)
-        {
-            this.Points = pts;
-            tblock_dim.Text = Dimension;
-            tblock_loc.Text = Position;
-            HaveTowPts = true;
-            btn_start.IsEnabled = CanStart;
-        }
+        public Timer timerLoop;
 
         private int count = 0;
 
@@ -38,6 +30,7 @@ namespace JuAutoScreenShot
             get => count++;
             private set => count = value;
         }
+        public void resetCount() => count = 0;
 
 
         private string dirOutput;
@@ -45,7 +38,7 @@ namespace JuAutoScreenShot
         {
             get { return dirOutput; }
             set
-            {   dirOutput = value;  }
+            { dirOutput = value; }
         }
 
         private float frequency;
@@ -54,7 +47,7 @@ namespace JuAutoScreenShot
         {
             get { return frequency; }
             set
-            {   frequency = value; }
+            { frequency = value; }
         }
 
         public string Position
@@ -74,9 +67,14 @@ namespace JuAutoScreenShot
             get { return HaveTowPts && Frequency > 0 && Directory.Exists(DirOutput); }
             private set { }
         }
-
-        //int[] position = new int[] { 0, 0 };
-        //int[] dimension = new int[] { 0, 0 };
+        public void setPoints(Point[] pts)
+        {
+            this.Points = pts;
+            tblock_dim.Text = Dimension;
+            tblock_loc.Text = Position;
+            HaveTowPts = true;
+            btn_start.IsEnabled = CanStart;
+        }
 
         private Bitmap GetSreenshot()
         {
@@ -95,21 +93,41 @@ namespace JuAutoScreenShot
 
         private void Button_Click_Start(object sender, RoutedEventArgs e)
         {
-            TimeSpan startTimeSpan = TimeSpan.Zero;
-            TimeSpan periodTimeSpan = TimeSpan.FromSeconds(Frequency);
-
-            System.Threading.Timer timer = new System.Threading.Timer((obj) =>
+            if (!this.IsStarted)
             {
-                SceenShotLoop();
-            }, null, startTimeSpan, periodTimeSpan);
+                AutoResetEvent autoEvent = new AutoResetEvent(false);
+
+                TimeSpan startTimeSpan = TimeSpan.Zero;
+                TimeSpan periodTimeSpan = TimeSpan.FromSeconds(Frequency);
+                TimerCallback timerDelegate = new TimerCallback(ScreenShotLoop);
+                timerLoop = new Timer(timerDelegate, autoEvent, startTimeSpan, periodTimeSpan);
+                this.IsStarted = true;
+                btn_start.Content = "Stop";
+                btn_selectArea.IsEnabled = false;
+                tbox_folder.IsEnabled = false;
+                tbox_frequency.IsEnabled = false;
+
+                dirOutput = dirOutput.Trim();
+                if (dirOutput.EndsWith("\\") || dirOutput.EndsWith("/")) dirOutput = dirOutput.Substring(0, dirOutput.Length - 1);
+                Directory.CreateDirectory(string.Format("{0}\\{1}", dirOutput, "base64"));
+            }
+            else
+            {
+                timerLoop.Dispose();
+                resetCount();
+                btn_start.Content = "Start";
+                //tblock_count.Text = "";
+                btn_selectArea.IsEnabled = true;
+                tbox_folder.IsEnabled = true;
+                tbox_frequency.IsEnabled = true;
+            }
         }
 
         private void Button_Click_Area(object sender, RoutedEventArgs e)
         {
             if (IsStarted == false)
             {
-                // WindowState = WindowState.Minimized;
-
+                this.Hide();
                 Bitmap screen = GetSreenshot();
                 ScreenshotArea screeshotArea = new ScreenshotArea(screen, this);
                 screeshotArea.Show();
@@ -156,28 +174,73 @@ namespace JuAutoScreenShot
             return null;
         }
 
-        public void SceenShotLoop()
+        private static byte[] BitmapToBase64(Bitmap image)
         {
-            //Bitmap screen = GetSreenshot();
-            //int x = (int)Math.Min(Points[0].X, Points[1].X);
-            //int y = (int)Math.Min(Points[0].Y, Points[1].Y);
-            //int w = (int)Math.Abs(Points[0].X - Points[1].X);
-            //int h = (int)Math.Abs(Points[0].Y - Points[1].Y);
-            //Bitmap screenCrop = Crop(screen, x, y, w, h);
-            //
-            //string now = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture).Substring(0,19).Replace(':', '-');
-            //string path = string.Format("{0}\\{1}.jpg", dirOutput, now);
-            //
-            //
-            //ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
-            //
-            //Encoder myEncoder = Encoder.Quality;
-            //EncoderParameters myEncoderParameters = new EncoderParameters(1);
-            //EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 100L);
-            //myEncoderParameters.Param[0] = myEncoderParameter;
-            //
-            //screenCrop.Save(path, myImageCodecInfo, myEncoderParameters);
-            Debug.WriteLine("Loop:"+Count);
+            string base64String = string.Empty;
+
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                image.Save(memoryStream, ImageFormat.Bmp);
+
+                memoryStream.Position = 0;
+                byte[] byteBuffer = memoryStream.ToArray();
+
+                base64String = Convert.ToBase64String(byteBuffer);
+                byteBuffer = null;
+            }
+
+            return Convert.FromBase64String(base64String);
+        }
+
+        private static Bitmap Base64ToBitmap(byte[] base64)
+        {
+            string base64string = Convert.ToBase64String(base64);
+            byte[] byteBuffer = Convert.FromBase64String(base64string);
+
+            /// If close stream an error is raised when save the bitmap
+            /// It sould be fixed 
+            //using (MemoryStream memoryStream = new MemoryStream(byteBuffer)) {}
+            MemoryStream memoryStream = new MemoryStream(byteBuffer);
+            memoryStream.Position = 0;
+            Bitmap bmpReturn = (Bitmap)System.Drawing.Image.FromStream(memoryStream);
+            return bmpReturn;
+        }
+
+        public void ScreenShotLoop(object obj)
+        {
+            Debug.WriteLine($"Loop:{Count}");
+
+            Bitmap screen = GetSreenshot();
+            int x = (int)Math.Min(Points[0].X, Points[1].X);
+            int y = (int)Math.Min(Points[0].Y, Points[1].Y);
+            int w = (int)Math.Abs(Points[0].X - Points[1].X);
+            int h = (int)Math.Abs(Points[0].Y - Points[1].Y);
+            Bitmap screenCrop = Crop(screen, x, y, w, h);
+
+            string now = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture).Substring(0, 19).Replace(':', '-');
+
+            // Save base64
+            byte[] base64btm = BitmapToBase64(screenCrop);
+            File.WriteAllBytes(string.Format("{0}\\{1}\\{2}", DirOutput, "base64", now), base64btm);
+
+            // Decode base64
+            // Bitmap screenCropDecode = Base64ToBitmap(base64btm);
+            // Debug.WriteLine(screenCrop.Width);
+
+            // Save as jpg
+            string path = string.Format("{0}\\{1}.jpg", dirOutput, now);
+            ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
+            Encoder myEncoder = Encoder.Quality;
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 95L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+            screenCrop.Save(path, myImageCodecInfo, myEncoderParameters);
+            // screenCropDecode.Save(path, myImageCodecInfo, myEncoderParameters);
+
+            screen.Dispose();
+            screenCrop.Dispose();
+            // screenCropDecode.Dispose();
         }
     }
 }

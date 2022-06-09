@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -127,8 +126,8 @@ namespace JuAutoScreenShot
                 PointToScreen(this.area[1]),
             };
             mainWindow.setPoints(absoluteArea);
+            mainWindow.Show();
             mainWindow.WindowState = WindowState.Normal;
-            Debug.WriteLine(mainWindow.Dimension);
             this.Close();
         }
     }
