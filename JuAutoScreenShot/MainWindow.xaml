@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JuAutoScreenShot"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="300"
+        Title="JuAutoScreeshot" Height="250" Width="300"
         x:Name="this_">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="22,16,0,0" TextWrapping="Wrap" Text="Dossier de sortie:" VerticalAlignment="Top"/>
@@ -15,10 +15,10 @@
         <TextBox x:Name="tbox_frequency" HorizontalAlignment="Left" Height="23" Margin="232,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="26" TextChanged="onTextChanged"/>
 
         <Button x:Name="btn_selectArea" Content="Sélectionner une zone" HorizontalAlignment="Left" Margin="22,79,0,0" VerticalAlignment="Top" Width="135" Click="Button_Click_Area"/>
-        <TextBlock HorizontalAlignment="Left" Margin="22,98,0,0" TextWrapping="Wrap" Text="Dimension:" VerticalAlignment="Top"/>
-        <TextBlock x:Name="tblock_dim" HorizontalAlignment="Left" Margin="119,98,0,0" TextWrapping="Wrap" Text=" - " VerticalAlignment="Top" Width="139"/>
-        <TextBlock HorizontalAlignment="Left" Margin="22,114,0,0" TextWrapping="Wrap" Text="Position:" VerticalAlignment="Top"/>
-        <TextBlock x:Name="tblock_loc" HorizontalAlignment="Left" Margin="119,114,0,0" TextWrapping="Wrap" Text=" - " VerticalAlignment="Top" Width="139"/>
+        <TextBlock HorizontalAlignment="Left" Margin="22,102,0,0" TextWrapping="Wrap" Text="Dimension:" VerticalAlignment="Top"/>
+        <TextBlock x:Name="tblock_dim" HorizontalAlignment="Left" Margin="119,102,0,0" TextWrapping="Wrap" Text=" - " VerticalAlignment="Top" Width="139"/>
+        <TextBlock HorizontalAlignment="Left" Margin="22,118,0,0" TextWrapping="Wrap" Text="Position:" VerticalAlignment="Top"/>
+        <TextBlock x:Name="tblock_loc" HorizontalAlignment="Left" Margin="119,118,0,0" TextWrapping="Wrap" Text=" - " VerticalAlignment="Top" Width="139"/>
 
         <!-- 
         <TextBlock x:Name="tblock_count" Text="{Binding Count, Mode=OneWay}" HorizontalAlignment="Left" Margin="129,156,0,0" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="43" Height="18"/>
