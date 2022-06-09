@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>ftp://ftp.cluster029.hosting.ovh.net/www/juautoscreenshot/</PublishUrl>
+    <PublishUrl>D:\perso\00_dev\github\JuAutoScreenShot\published\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -25,8 +25,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://ftp.cluster029.hosting.ovh.net/www/juautoscreenshot/</InstallUrl>
-    <UpdateUrl>http://ftp.cluster029.hosting.ovh.net/www/juautoscreenshot/</UpdateUrl>
+    <InstallUrl>https://raw.githubusercontent.com/plorgue/JuAutoScreenShot/main/published/</InstallUrl>
+    <UpdateUrl>https://raw.githubusercontent.com/plorgue/JuAutoScreenShot/main/published/</UpdateUrl>
     <ProductName>JuAutoScreeshot</ProductName>
     <PublisherName>Paul Lorgue</PublisherName>
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>

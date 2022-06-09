@@ -8,7 +8,7 @@
         <expiration maximumAge="0" unit="days" />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://ftp.cluster029.hosting.ovh.net/www/juautoscreenshot/JuAutoScreenShot.application" />
+    <deploymentProvider codebase="https://raw.githubusercontent.com/plorgue/JuAutoScreenShot/main/published/JuAutoScreenShot.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
