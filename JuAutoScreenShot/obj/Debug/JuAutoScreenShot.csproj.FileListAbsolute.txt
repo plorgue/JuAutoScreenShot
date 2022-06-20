@@ -18,3 +18,4 @@ D:\perso\00_dev\github\JuAutoScreenShot\JuAutoScreenShot\obj\Debug\JuAutoScreenS
 D:\perso\00_dev\github\JuAutoScreenShot\JuAutoScreenShot\obj\Debug\JuAutoScreenShot.application
 D:\perso\00_dev\github\JuAutoScreenShot\JuAutoScreenShot\obj\Debug\JuAutoScreenShot.exe
 D:\perso\00_dev\github\JuAutoScreenShot\JuAutoScreenShot\obj\Debug\JuAutoScreenShot.pdb
+D:\perso\00_dev\github\JuAutoScreenShot\JuAutoScreenShot\obj\Debug\JuAutoScreenShot.csproj.AssemblyReference.cache

@@ -8,7 +8,7 @@
         Title="JuAutoScreeshot" Height="250" Width="300"
         x:Name="this_">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="22,16,0,0" TextWrapping="Wrap" Text="Dossier de sortie:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="22,16,0,0" TextWrapping="Wrap" Text="Dossier:" VerticalAlignment="Top"/>
         <TextBox x:Name="tbox_folder" HorizontalAlignment="Left" Height="23" Margin="138,12,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="onTextChanged"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="22,45,0,0" TextWrapping="Wrap" Text="Pause entre deux captures (sec):" VerticalAlignment="Top"/>
